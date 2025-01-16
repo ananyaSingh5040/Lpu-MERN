@@ -7,19 +7,23 @@
   </head>
   <body>
     <h1>Personal Details:</h1>
-    <form>
+    <form action="./complete.html">
       <label for="name">Name:</label>
-      <input type="text" placeholder="Enter your name..." name="username" required/>
+      <input type="text" placeholder="Enter your name..." name="username" required maxlength="9"/>
       <br /> <br>
       <label for="age">Age:</label>
       <input type="number" placeholder="Enter your age..." name="age" />
       <br /> <br>
       <label for="email">Email:</label>
-      <input type="email" placeholder="Email goes here..." name="email"required />
+      <input type="email" placeholder="Email goes here..." name="email" autocomplete="off" />
       <br /> <br>
       <label for="=password">Password:</label>
       <input type="password" placeholder="Enter passcode..." name="pass" required />
       <br /> <br>
+      <label for="=donation">Donation:</label>
+      <input type="number" name="donation" required value="10" readonly required />
+      <br /> <br>
+      <!-- readonly submit hone pe jaayega url main and disabled nai. -->
       <input type="submit">
       <!-- Number field has 14 characters. -->
        <!-- sends data like: <html url>?key=value&key=value&key=value-->
