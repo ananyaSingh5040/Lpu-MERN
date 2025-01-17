@@ -1,0 +1,19 @@
+*{
+    color: red;
+}
+p{
+    color: gold;
+}
+.text{
+    color: blue;
+}
+#letters{
+    color: pink;
+}
+p.text#letters{
+    color: lime;
+}
+.text-highest{
+    color: aqua !important; 
+    /* do not use imp keyword until needed.  */
+}

@@ -1,0 +1,15 @@
+h2{
+    height: 200px;
+    width: 400px;
+    width: fit-content;
+    /* margin-left: 300; */
+    margin: auto; 
+    /* will center */
+    text-align: center;
+}
+#title{
+    color: red;
+}
+.heading{
+    font-size: 100px ;
+}
