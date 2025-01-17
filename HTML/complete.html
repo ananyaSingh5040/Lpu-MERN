@@ -9,12 +9,40 @@
     <b>Please provide more information:</b>
     <form>
         <div>
-            <label>Gender</label>
-            <label>Male</label>
-            <input type="radio" name="gender" value="male">
-            <label>Female</label>
-            <input type="radio" name="gender" value="female">
+            <label>Gender:</label>
+            <br>
+            <label for="maal">Male</label>
+            <input type="radio" name="gender" value="male" id="maal">
+            <br>
+            <label for="femaal">Female</label>
+            <input type="radio" name="gender" value="female" id="femaal">
+            <br><br>
         </div>
+        <div>
+            <label >Documents: </label>
+            <br>
+            <input type="checkbox" name="document-submitted" value="passport" >
+            <label for="">Passport</label>
+            <br>
+            <input type="checkbox" name="document-submitted" value="Driving License" >
+            <label for="">Driving License</label>
+            <br>
+            <input type="checkbox" name="document-submitted" value="Resident Proof" >
+            <label for="">Resident Proof</label>
+        </div>
+        <div>
+            <label for="">Volume: </label>
+            <input type="range" min="0" max="10" >
+        </div>
+        <textarea rows="10" cols="20" name="registerrr" id="textrtr">This is my application to register...</textarea> <br>
+        <select name="foods" id="food">
+            <option>Cake</option>
+            <option>Donuts</option>
+            <option>Cookies</option>
+            <option>Milkshakes</option>
+        </select> <br><br>
+        <input type="submit" value="Register">
+        <input type="reset">
     </form>
     
 </body>
