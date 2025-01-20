@@ -1,0 +1,31 @@
+body{
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px;
+}
+.container{
+    padding:30px;
+    margin:30px;
+    height: 100%;
+    width: 400px;
+    background-color: rgb(252, 250, 249);
+    border: 2px solid #ddd;
+    border-radius: 20px;
+    /* box-shadow: #595757; */
+    text-align: center;
+
+}
+button{
+    padding: auto;
+    border-radius: 30px;
+    border: 2px solid #ddd;
+    width: 50%;
+    height: 30px;
+    background-color: rgb(252, 250, 249);
+}
+p a{
+    color: green;
+    text-decoration: none;
+}
