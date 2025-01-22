@@ -1,0 +1,24 @@
+/* grid code for sectioning! */
+.container{
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    grid-template-rows: auto 1fr auto ;
+    grid-template-areas: "header header" "sidebar main" "footer footer";
+    gap: 20px;
+}
+.header{
+    grid-area: header;
+    border: 1px solid green;
+}
+.sidebar{
+    grid-area: sidebar;
+    border: 1px solid green;
+}
+.main{
+    grid-area: main;
+    border: 1px solid green;
+}
+.footer{
+    grid-area: footer;
+    border: 1px solid green;
+}
