@@ -1,0 +1,24 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: yellow;
+}
+.div{
+    background-color: brown;
+    border: 15px solid black;
+}
+.task-page{
+    margin:  1rem;
+    padding: 1rem;
+    background: white;
+    color: blue;
+}
+.user-input{
+    margin: 1rem;
+    padding: 1rem;
+    background-color: azure;
+    border-radius: 30px;
+}

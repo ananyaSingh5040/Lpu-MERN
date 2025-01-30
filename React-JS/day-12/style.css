@@ -1,0 +1,16 @@
+.title-box{
+    background-color: yellow;
+
+}
+.heading{
+    color: black
+}
+.card{
+    padding: 2rem;
+    margin: 2rem;
+    gap:1rem;
+    background-color: rgb(43, 255, 0);
+    height: 300px;
+    width: 300px;
+    font-weight: bold;
+}
