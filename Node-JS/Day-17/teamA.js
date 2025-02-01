@@ -8,8 +8,10 @@ const sumArray =(arr)=>{
     {
         total= sum(total,arr[i]);
     }
-    console.log(total);
+    return total;
 }
 console.log("B");
-let arr= new Array(1,2,3,4,5)
-sumArray(arr);
+
+module.exports={
+    sumArray,
+};
