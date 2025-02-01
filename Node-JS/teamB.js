@@ -1,5 +1,5 @@
 function sum(a, b) {
-  console.log("---Calculating sum---");
+//   console.log("---Calculating sum---");
   return a + b;
 }
 const mul = (a, b) => {
