@@ -1,0 +1,3 @@
+Node-Js caches the particular program after running it once.
+It wouldn't run baar-baar.
+Cache memory main store maar leta once the program is done running.
