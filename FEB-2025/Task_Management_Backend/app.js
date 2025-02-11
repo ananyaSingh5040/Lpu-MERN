@@ -6,6 +6,8 @@ const express = require("express"); //express framework for our backend
 const morgan = require("morgan");
 const cors = require("cors");
 const User = require("./models/userModel.js");
+const { generateOTP } = require("./utils/otpHelper.js");
+const {sendOtpEmail} = require("./utils/emailHelper.js");
 //---------------------------------------------------------------------
 const app = express();
 //---------------------------------------------------------------------
@@ -75,6 +77,22 @@ app.post("/users", async (req, res) => {
     }
   }
 });
+app.post('/otps',async(req)=>{
+  // const queryObj= req.query;
+  const {email}= req.query;
+  //req format + regex + length checking of email.
+  if(!email)
+  {
+    res.status(400).json({
+      status:'fail',
+      message:'Missing required param: "email"',
+    });
+    return;
+  }
+  const otp= generateOTP();
+ const isEmailSent= sendOtpEmail(email,otp);
+  
+})
 app.listen(PORT, () => {
   console.log("Server Started on port: ", PORT);
 });
