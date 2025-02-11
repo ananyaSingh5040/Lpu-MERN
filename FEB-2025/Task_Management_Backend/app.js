@@ -7,7 +7,8 @@ const morgan = require("morgan");
 const cors = require("cors");
 const User = require("./models/userModel.js");
 const { generateOTP } = require("./utils/otpHelper.js");
-const {sendOtpEmail} = require("./utils/emailHelper.js");
+const { sendOtpEmail } = require("./utils/emailHelper.js");
+const OTP = require("./models/otpModel.js");
 //---------------------------------------------------------------------
 const app = express();
 //---------------------------------------------------------------------
@@ -17,7 +18,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cors()); 
 app.use(express.json());
 //--------------------------------------------------------
 //request listener/ request handler
@@ -51,48 +52,68 @@ app.post("/users", async (req, res) => {
     console.log("Error in /POST users");
     console.log(err.name, err.code);
     console.log(err.message);
-    if(err.name==="ValidationError")
-    {
-        res.status(400);
-        res.json({
-            status:"fail",
-            message:"Data validation failed: "+ err.message,
-        })
-    }
-    else if (err.code === 11000) {
-        res.status(400);
-        res.json({
-            status: "fail",
-            message:"Email already exists",
-        });
-    }
-    else
-    {
-        res.status(500);
-        res.json({
-          status: "fail",
-          message: "Internal Server Error",
-        });
-        
+    if (err.name === "ValidationError") {
+      res.status(400);
+      res.json({
+        status: "fail",
+        message: "Data validation failed: " + err.message,
+      });
+    } else if (err.code === 11000) {
+      res.status(400);
+      res.json({
+        status: "fail",
+        message: "Email already exists",
+      });
+    } else {
+      res.status(500);
+      res.json({
+        status: "fail",
+        message: "Internal Server Error",
+      });
     }
   }
 });
-app.post('/otps',async(req)=>{
+app.post("/otps", async (req, res) => {
   // const queryObj= req.query;
-  const {email}= req.query;
+  const { email } = req.query;
   //req format + regex + length checking of email.
-  if(!email)
-  {
+  if (!email) {
     res.status(400).json({
-      status:'fail',
-      message:'Missing required param: "email"',
+      status: "fail",
+      message: 'Missing required param: "email"',
     });
     return;
   }
-  const otp= generateOTP();
- const isEmailSent= sendOtpEmail(email,otp);
+  //create a OTP
+  const otp = generateOTP();
+  //send the OTP to mail
+    const isEmailSent = await sendOtpEmail(email, otp);
+
   
-})
+
+  if (!isEmailSent) {
+    // this is the case when isEmailSent is false
+    res.status(500).json({
+      status: "fail",
+      message: "Email could not be sent! Please try again after 30 seconds!",
+    });
+    return;
+  } else {
+    console.log("isEmail sent", isEmailSent);
+  }
+  
+
+  await OTP.create({
+    email,
+    otp,
+  });
+
+  res.status(201);
+  res.json({
+    status: "success",
+    message: `OTP sent to ${email}`,
+  });
+});
 app.listen(PORT, () => {
   console.log("Server Started on port: ", PORT);
 });
