@@ -23,7 +23,7 @@ app.use(cors());
 app.use(express.json());
 //--------------------------------------------------------
 //request listener/ request handler
-app.get("/users", (req, res) => {
+app.get("/users/register", (req, res) => {
   try {
   } catch (e) {
     console.log("Errror in GET /users");
@@ -100,8 +100,9 @@ app.post("/otps", async (req, res) => {
   } else {
     console.log("isEmail sent", isEmailSent);
   }
-  const newSalt= await bcrypt.genSalt(10);
-  const hashedOtp= await bcrypt.hash(otp.toString(),newSalt);
+  //HASHING USING BCRYPT:
+  const newSalt = await bcrypt.genSalt(10);
+  const hashedOtp = await bcrypt.hash(otp.toString(), newSalt);
 
   await OTP.create({
     email,
@@ -114,7 +115,6 @@ app.post("/otps", async (req, res) => {
     message: `OTP sent to ${email}`,
   });
 });
-
 
 // const testing = async () => {
 //   console.time("salt1");
