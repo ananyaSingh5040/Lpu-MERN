@@ -9,6 +9,7 @@ const User = require("./models/userModel.js");
 const { generateOTP } = require("./utils/otpHelper.js");
 const { sendOtpEmail } = require("./utils/emailHelper.js");
 const OTP = require("./models/otpModel.js");
+const bcrypt = require("bcrypt");
 //---------------------------------------------------------------------
 const app = express();
 //---------------------------------------------------------------------
@@ -18,7 +19,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(morgan("dev"));
-app.use(cors()); 
+app.use(cors());
 app.use(express.json());
 //--------------------------------------------------------
 //request listener/ request handler
@@ -87,9 +88,7 @@ app.post("/otps", async (req, res) => {
   //create a OTP
   const otp = generateOTP();
   //send the OTP to mail
-    const isEmailSent = await sendOtpEmail(email, otp);
-
-  
+  const isEmailSent = await sendOtpEmail(email, otp);
 
   if (!isEmailSent) {
     // this is the case when isEmailSent is false
@@ -101,11 +100,12 @@ app.post("/otps", async (req, res) => {
   } else {
     console.log("isEmail sent", isEmailSent);
   }
-  
+  const newSalt= await bcrypt.genSalt(10);
+  const hashedOtp= await bcrypt.hash(otp.toString(),newSalt);
 
   await OTP.create({
     email,
-    otp,
+    otp: hashedOtp,
   });
 
   res.status(201);
@@ -114,6 +114,19 @@ app.post("/otps", async (req, res) => {
     message: `OTP sent to ${email}`,
   });
 });
+
+
+// const testing = async () => {
+//   console.time("salt1");
+//   const newSalt = await bcrypt.genSalt(10); // rounds-x == iterations pow(2,x)
+//   const newHash = await bcrypt.hash("password1", newSalt);
+//   console.log("salt= ", newSalt);
+//   console.log("hash= ", newHash);
+//   console.timeEnd("salt1");
+//   console.log(newSalt);
+// };
+
+// testing();
 app.listen(PORT, () => {
   console.log("Server Started on port: ", PORT);
 });
