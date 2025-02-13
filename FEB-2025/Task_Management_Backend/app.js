@@ -23,7 +23,7 @@ app.use(cors());
 app.use(express.json());
 //--------------------------------------------------------
 //request listener/ request handler
-app.get("/users/register", (req, res) => {
+app.get("/users", (req, res) => {
   try {
   } catch (e) {
     console.log("Errror in GET /users");
@@ -35,10 +35,41 @@ app.get("/users/register", (req, res) => {
     });
   }
 });
-app.post("/users", async (req, res) => {
+app.post("/users/register", async (req, res) => {
   try {
-    const userInfo = req.body;
-    const newUser = await User.create(userInfo);
+    const { email, password, otp } = req.body;
+    //Verify the otp from the database, and the user otp:
+    const otpDoc = await OTP.findOne({
+      email: email,
+    }).sort("-createdAt");
+    console.log(otpDoc);
+    if (!otpDoc) {
+      res.status(400);
+      res.json({
+        status: "fail",
+        msg: "Otp is not sent or is expired.",
+      });
+      return;
+    }
+//otp ko destructure karke rename kar rahe here: 
+    const { otp: hashedOtp } = otpDoc;
+    const isOtpCorrect = await bcrypt.compare(otp.toString(), hashedOtp);
+    if (!isOtpCorrect) {
+      res.status(401); //unauthorized
+      res.json({
+        status: "fail",
+        msg: "Invalid OTP!",
+      });
+      return;
+    }
+
+    //register the user securely <3
+    const hashedPasscode = await bcrypt.hash(password, 14);
+
+    const newUser = await User.create({
+      email,
+      password: hashedPasscode,
+    });
     res.status(201);
     res.json({
       status: "success",
