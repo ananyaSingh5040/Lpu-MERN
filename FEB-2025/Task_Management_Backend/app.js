@@ -68,6 +68,7 @@ app.post("/users/register", async (req, res) => {
       });
       return;
     }
+    
 
     //register the user securely <3
     const hashedPasscode = await bcrypt.hash(password, 14);
@@ -208,7 +209,12 @@ app.post("/users/login", async (req, res) => {
 
     //adds a cookie to frontend in the format :- name,value
     //front-end should allow the backend to perform cookie operations
-    res.cookie("authorization", token);
+    res.cookie("authorization", token,{
+      httpOnly: true,
+      secure: true,
+      sameSite: "none", 
+      //as bckend and frntend are in diff domain iskeliye samsite = none.
+    });
 
     res.status(200);
     res.json({
