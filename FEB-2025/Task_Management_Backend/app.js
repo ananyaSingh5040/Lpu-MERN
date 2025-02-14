@@ -21,7 +21,8 @@ app.use((req, res, next) => {
 });
 app.use(morgan("dev"));
 app.use(
-  cors({ //credentials true kardene se backend ko access milta to change frontend
+  cors({
+    //credentials true kardene se backend ko access milta to change frontend
     credentials: true,
     origin: "http://localhost:5173",
   })
@@ -68,7 +69,6 @@ app.post("/users/register", async (req, res) => {
       });
       return;
     }
-    
 
     //register the user securely <3
     const hashedPasscode = await bcrypt.hash(password, 14);
@@ -209,11 +209,11 @@ app.post("/users/login", async (req, res) => {
 
     //adds a cookie to frontend in the format :- name,value
     //front-end should allow the backend to perform cookie operations
-    res.cookie("authorization", token,{
+    res.cookie("authorization", token, {
       httpOnly: true,
       secure: true,
-      sameSite: "none", 
-      //as bckend and frntend are in diff domain iskeliye samsite = none.
+      sameSite: "none",
+      //as bckend and frntend are in diff domain iskeliye sameSite = none.
     });
 
     res.status(200);
@@ -228,12 +228,12 @@ app.post("/users/login", async (req, res) => {
       },
     });
   } catch (err) {
+    console.log("Error In login: ", err.message);
     res.status(500);
     res.json({
       status: "fail",
       msg: "Internal Server error",
     });
-    console.log("Error In login: ", err.message);
   }
 });
 
