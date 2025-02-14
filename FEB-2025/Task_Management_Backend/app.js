@@ -9,9 +9,10 @@ const User = require("./models/userModel.js");
 const { generateOTP } = require("./utils/otpHelper.js");
 const { sendOtpEmail } = require("./utils/emailHelper.js");
 const OTP = require("./models/otpModel.js");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt"); //used for hashing
+const jwt = require("jsonwebtoken");
 //---------------------------------------------------------------------
-const app = express();
+const app = express(); //app creation
 //---------------------------------------------------------------------
 //middlewares
 app.use((req, res, next) => {
@@ -19,10 +20,15 @@ app.use((req, res, next) => {
   next();
 });
 app.use(morgan("dev"));
-app.use(cors());
+app.use(
+  cors({ //credentials true kardene se backend ko access milta to change frontend
+    credentials: true,
+    origin: "http://localhost:5173",
+  })
+);
 app.use(express.json());
 //--------------------------------------------------------
-//request listener/ request handler
+//request listener/ request handler : ROUTES
 app.get("/users", (req, res) => {
   try {
   } catch (e) {
@@ -51,7 +57,7 @@ app.post("/users/register", async (req, res) => {
       });
       return;
     }
-//otp ko destructure karke rename kar rahe here: 
+    //otp ko destructure karke rename kar rahe here:
     const { otp: hashedOtp } = otpDoc;
     const isOtpCorrect = await bcrypt.compare(otp.toString(), hashedOtp);
     if (!isOtpCorrect) {
@@ -158,6 +164,75 @@ app.post("/otps", async (req, res) => {
 // };
 
 // testing();
+
+app.post("/users/login", async (req, res) => {
+  //LOGIN:
+  try {
+    //here user is sending the password.
+    const { email, password } = req.body;
+    const currUser = await User.findOne({ email: email });
+    if (!currUser) {
+      res.status(400);
+      res.json({
+        status: "fail",
+        message: "User is not Registered.",
+      });
+    }
+    //This is coming from database, hashedPasscode is from database
+    const { password: hashedPassword, fullName, _id } = currUser;
+    const isPasswordCorrect = await bcrypt.compare(password, hashedPassword);
+    if (!isPasswordCorrect) {
+      res.status(401);
+      res.json({
+        status: "fail",
+        message: "Invalid password!",
+      });
+      return;
+    }
+    //JSON WEB TOKEN: jwt to validate the user requests.
+    //Header.Payload.Signature - syntax of jwt
+    //signature= Hashing of payload and salt(secret key)
+
+    const token = jwt.sign(
+      {
+        email,
+        _id,
+        fullName,
+      },
+      process.env.JWT_SECRET_KEY, //secret key
+      {
+        expiresIn: "1d", //https://github.com/vercel/ms
+      }
+    );
+    console.log(token);
+
+    //adds a cookie to frontend in the format :- name,value
+    //front-end should allow the backend to perform cookie operations
+    res.cookie("authorization", token);
+
+    res.status(200);
+    res.json({
+      status: "success",
+      message: "User Logged In!",
+      data: {
+        user: {
+          email,
+          fullName,
+        },
+      },
+    });
+  } catch (err) {
+    res.status(500);
+    res.json({
+      status: "fail",
+      msg: "Internal Server error",
+    });
+    console.log("Error In login: ", err.message);
+  }
+});
+
+//------------------------------------------------------
+//SERVER:
 app.listen(PORT, () => {
   console.log("Server Started on port: ", PORT);
 });
