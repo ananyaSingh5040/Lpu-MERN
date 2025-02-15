@@ -11,25 +11,32 @@ const { sendOtpEmail } = require("./utils/emailHelper.js");
 const OTP = require("./models/otpModel.js");
 const bcrypt = require("bcrypt"); //used for hashing
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+const {Task} = require("./models/taskModel.js")
 //---------------------------------------------------------------------
 const app = express(); //app creation
 //---------------------------------------------------------------------
 //middlewares
-app.use((req, res, next) => {
-  console.log("request received->", req.url);
-  next();
-});
 app.use(morgan("dev"));
 app.use(
   cors({
     //credentials true kardene se backend ko access milta to change frontend
     credentials: true,
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
   })
 );
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log("Request received->", req.url);
+  next();
+});
 //--------------------------------------------------------
-//request listener/ request handler : ROUTES
+//request listener/ request handler : ROUTES/API
+
+app.get("/", (req, res) => {
+  res.send("<h1>Server is working fine ...</h1>");
+});
+//GETS USERS:
 app.get("/users", (req, res) => {
   try {
   } catch (e) {
@@ -42,6 +49,7 @@ app.get("/users", (req, res) => {
     });
   }
 });
+//USER CREATION:
 app.post("/users/register", async (req, res) => {
   try {
     const { email, password, otp } = req.body;
@@ -112,6 +120,7 @@ app.post("/users/register", async (req, res) => {
     }
   }
 });
+//OTPS:
 app.post("/otps", async (req, res) => {
   // const queryObj= req.query;
   const { email } = req.query;
@@ -153,21 +162,8 @@ app.post("/otps", async (req, res) => {
     message: `OTP sent to ${email}`,
   });
 });
-
-// const testing = async () => {
-//   console.time("salt1");
-//   const newSalt = await bcrypt.genSalt(10); // rounds-x == iterations pow(2,x)
-//   const newHash = await bcrypt.hash("password1", newSalt);
-//   console.log("salt= ", newSalt);
-//   console.log("hash= ", newHash);
-//   console.timeEnd("salt1");
-//   console.log(newSalt);
-// };
-
-// testing();
-
+//LOGIN:
 app.post("/users/login", async (req, res) => {
-  //LOGIN:
   try {
     //here user is sending the password.
     const { email, password } = req.body;
@@ -236,6 +232,85 @@ app.post("/users/login", async (req, res) => {
     });
   }
 });
+
+//middleware to authorize the user.
+app.use(cookieParser()); //reads the cookies and adds them to req object
+app.use((req, res, next) => {
+  try{
+  //validate the token
+  const { authorization } = req.cookies;
+  if (!authorization) {
+    res.status(401);
+    res.json({
+      status: "fail",
+      msg: "Authorization failed!",
+    });
+  }
+  jwt.verify(authorization, process.env.JWT_SECRET_KEY, (error, data) => {
+    if (error) {
+      //that means token is invalid (hacking attempt)
+      res.status(401);
+      res,
+        json({
+          status: "fail",
+          msg: "Authorization failed!",
+        });
+    } 
+    else {
+      next();
+    }
+  });
+} catch(err)
+{
+  console.log("Error in validation middleware", err.message);
+res.status(500);
+res.json({
+status: "fail",
+message: "Internal Server Error",
+});
+}
+});
+
+//CREATE TASKS:
+app.post("/tasks", async (req, res) => {
+  try {
+    // 1. get the data from request
+    const taskInfo = req.body;
+
+    // 2. validate the data :: now mongoose does that
+    // 3. save the data in db :: MongoDB (online --> ATLAS) (offline is pain to setup :: in deployment we will mostly prefer online)
+    const newTask = await Task.create(taskInfo);
+
+    res.status(201); //created
+    res.json({
+      status: "success",
+      data: {
+        task: newTask,
+      },
+    });
+  } catch (err) {
+    console.log("Error in POST /tasks", err.message);
+    if (err.name === "ValidationError") {
+    res.status(400).json({ status: "fail", message: err.message });
+    } else if (err.code === 11000) {
+    res.status(400).json({ status: "fail", message: err.message });
+    } else {
+    res.status(500).json({ status: "fail", message: "Internal Server Error" });
+    }
+    }
+});
+
+// const testing = async () => {
+//   console.time("salt1");
+//   const newSalt = await bcrypt.genSalt(10); // rounds-x == iterations pow(2,x)
+//   const newHash = await bcrypt.hash("password1", newSalt);
+//   console.log("salt= ", newSalt);
+//   console.log("hash= ", newHash);
+//   console.timeEnd("salt1");
+//   console.log(newSalt);
+// };
+
+// testing();
 
 //------------------------------------------------------
 //SERVER:
