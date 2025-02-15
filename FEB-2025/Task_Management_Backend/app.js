@@ -12,7 +12,7 @@ const OTP = require("./models/otpModel.js");
 const bcrypt = require("bcrypt"); //used for hashing
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-const {Task} = require("./models/taskModel.js")
+const Task = require("./models/taskModel.js");
 //---------------------------------------------------------------------
 const app = express(); //app creation
 //---------------------------------------------------------------------
@@ -236,46 +236,49 @@ app.post("/users/login", async (req, res) => {
 //middleware to authorize the user.
 app.use(cookieParser()); //reads the cookies and adds them to req object
 app.use((req, res, next) => {
-  try{
-  //validate the token
-  const { authorization } = req.cookies;
-  if (!authorization) {
-    res.status(401);
+  try {
+    //validate the token
+    const { authorization } = req.cookies;
+    if (!authorization) {
+      res.status(401);
+      res.json({
+        status: "fail",
+        msg: "Authorization failed!",
+      });
+      return;
+    }
+    jwt.verify(authorization, process.env.JWT_SECRET_KEY, (error, data) => {
+      if (error) {
+        //that means token is invalid (hacking attempt)
+        res.status(401);
+        res,
+          json({
+            status: "fail",
+            msg: "Authorization failed!",
+          });
+      } else {
+       
+        req.currUser = data;
+        next();
+      }
+    });
+  } catch (err) {
+    console.log("Error in validation middleware", err.message);
+    res.status(500);
     res.json({
       status: "fail",
-      msg: "Authorization failed!",
+      message: "Internal Server Error",
     });
   }
-  jwt.verify(authorization, process.env.JWT_SECRET_KEY, (error, data) => {
-    if (error) {
-      //that means token is invalid (hacking attempt)
-      res.status(401);
-      res,
-        json({
-          status: "fail",
-          msg: "Authorization failed!",
-        });
-    } 
-    else {
-      next();
-    }
-  });
-} catch(err)
-{
-  console.log("Error in validation middleware", err.message);
-res.status(500);
-res.json({
-status: "fail",
-message: "Internal Server Error",
-});
-}
 });
 
 //CREATE TASKS:
 app.post("/tasks", async (req, res) => {
   try {
     // 1. get the data from request
-    const taskInfo = req.body;
+    const { assignor, ...taskInfo } = req.body;
+    const { email } = req.currUser;
+    taskInfo.assignor = email;
 
     // 2. validate the data :: now mongoose does that
     // 3. save the data in db :: MongoDB (online --> ATLAS) (offline is pain to setup :: in deployment we will mostly prefer online)
@@ -291,13 +294,15 @@ app.post("/tasks", async (req, res) => {
   } catch (err) {
     console.log("Error in POST /tasks", err.message);
     if (err.name === "ValidationError") {
-    res.status(400).json({ status: "fail", message: err.message });
+      res.status(400).json({ status: "fail", message: err.message });
     } else if (err.code === 11000) {
-    res.status(400).json({ status: "fail", message: err.message });
+      res.status(400).json({ status: "fail", message: err.message });
     } else {
-    res.status(500).json({ status: "fail", message: "Internal Server Error" });
+      res
+        .status(500)
+        .json({ status: "fail", message: "Internal Server Error" });
     }
-    }
+  }
 });
 
 // const testing = async () => {
