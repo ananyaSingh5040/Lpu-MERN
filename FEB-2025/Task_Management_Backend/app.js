@@ -15,10 +15,10 @@ const cookieParser = require("cookie-parser");
 const Task = require("./models/taskModel.js");
 const cron = require("node-cron");
 
-cron.schedule("* * * * *", () => {
-  console.log("running a task every minute");
-  sendReminderMail("singhananya5040@gmail.com");
-});
+// cron.schedule("* * * * *", () => {
+//   console.log("running a task every minute");
+//   sendReminderMail("singhananya5040@gmail.com");
+// });
 //---------------------------------------------------------------------
 const app = express(); //app creation
 //---------------------------------------------------------------------
