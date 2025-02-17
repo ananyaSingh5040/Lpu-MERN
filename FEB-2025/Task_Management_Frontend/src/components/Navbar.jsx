@@ -1,14 +1,20 @@
 import React from 'react'
+import { Link } from 'react-router';
 
-const Navbar = () => {
+const Navbar = ({currUser,handleLogout}) => {
   return (
     <>
-  <nav>
+  <nav className='navbar-nav'>
+    <header>
     <ul>
-      <Link to="/">Home</Link>
-      <Link to="/login">Login</Link>
-      <Link to="/signup">SignUp</Link>
+      <span className='navbar-span'>Hello, {currUser.fullName}!</span>
+      <Link to="/" className='navbar-link'>Home</Link>
+      <Link to="/login" className='navbar-link'>Login</Link>
+      <Link to="/signup" className='navbar-link'>SignUp</Link>
+      <Link to="/tasks" className='navbar-link'>Tasks</Link>
+      <button onClick={handleLogout} className='navbar-button'>Logout</button>
     </ul>
+    </header>
 
   </nav>
   </>

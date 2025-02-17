@@ -1,9 +1,13 @@
 import React from 'react'
+import Navbar from '../components/Navbar';
 
-const HomePage = () => {
+
+const HomePage = ({currUser,handleLogout}) => {
   return (
    <>
-   Homepage</>
+   <Navbar currUser={currUser} handleLogout={handleLogout}/>
+   <h1>homepage</h1>
+   </>
   )
 }
 

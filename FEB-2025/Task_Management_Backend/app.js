@@ -7,12 +7,18 @@ const morgan = require("morgan");
 const cors = require("cors");
 const User = require("./models/userModel.js");
 const { generateOTP } = require("./utils/otpHelper.js");
-const { sendOtpEmail } = require("./utils/emailHelper.js");
+const { sendOtpEmail, sendReminderMail } = require("./utils/emailHelper.js");
 const OTP = require("./models/otpModel.js");
 const bcrypt = require("bcrypt"); //used for hashing
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const Task = require("./models/taskModel.js");
+const cron = require("node-cron");
+
+cron.schedule("* * * * *", () => {
+  console.log("running a task every minute");
+  sendReminderMail("singhananya5040@gmail.com");
+});
 //---------------------------------------------------------------------
 const app = express(); //app creation
 //---------------------------------------------------------------------
@@ -54,7 +60,7 @@ app.get("/users", (req, res) => {
 //USER CREATION:
 app.post("/users/register", async (req, res) => {
   try {
-    const { email, password, otp } = req.body;
+    const { email, password, otp, fullName } = req.body;
     //Verify the otp from the database, and the user otp:
     const otpDoc = await OTP.findOne({
       email: email,
@@ -86,6 +92,7 @@ app.post("/users/register", async (req, res) => {
     const newUser = await User.create({
       email,
       password: hashedPasscode,
+      fullName,
     });
     res.status(201);
     res.json({
@@ -303,6 +310,60 @@ app.post("/tasks", async (req, res) => {
         .status(500)
         .json({ status: "fail", message: "Internal Server Error" });
     }
+  }
+});
+
+app.get("/users/me", (req, res) => {
+  try {
+    const { email, fullName } = req.currUser;
+    res.status(200);
+    res.json({
+      status: "success",
+      data: {
+        user: {
+          email,
+          fullName,
+        },
+      },
+    });
+  } catch (err) {
+    console.log("error is GET /users/me", err.message);
+    res.status(500);
+    res.json({
+      status: "fail",
+      message: "INTERNAL SERVER ERROR",
+    });
+  }
+});
+
+app.get("/users/logout", (req, res) => {
+  res.clearCookie("authorization");
+  res.json({
+    status: "success",
+    msg: "User is logged out!",
+  });
+});
+
+app.get("/tasks", async (req, res) => {
+  try {
+    const taskList = await Task.find().or([
+      { assignor: req.currUser.email },
+      { assignee: req.currUser.email },
+    ]);
+    res.status(200);
+    res.json({
+      status: "success",
+      data: {
+        tasks: taskList,
+      }, //the same port one
+    });
+  } catch (err) {
+    console.log("error is GET /users/me", err.message);
+    res.status(500);
+    res.json({
+      status: "fail",
+      message: "INTERNAL SERVER ERROR",
+    });
   }
 });
 

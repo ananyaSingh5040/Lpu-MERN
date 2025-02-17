@@ -6,7 +6,7 @@ const SignUp = () => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [email, setEmail] = useState(false);
   const [fullName, setFullName] = useState(false);
-  const navigate= useNavigate();
+  const navigate = useNavigate();
   const handleRegister = async (e) => {
     try {
       e.preventDefault();
@@ -71,38 +71,75 @@ const SignUp = () => {
     } catch (err) {
       // console.log(err);
       alert(err.message);
-
     }
   };
   return (
     <>
       {isOtpSent ? (
-        <form onSubmit={handleRegister}>
-          <input type="text" value={email} readOnly />
-          <input type="text" value={fullName} readOnly />
-          <input type="text" placeholder="OTP" name="otp" required />
+        <form className="register-form" onSubmit={handleRegister}>
+          <h1>Enter Credentials</h1>
+          <label htmlFor="email">Email: </label>
+          <input className="signup-input" type="text" value={email} readOnly />
+          <label htmlFor="fullName">Name: </label>
           <input
+            className="signup-input"
+            type="text"
+            value={fullName}
+            readOnly
+          />
+          <label htmlFor="otp">OTP: </label>
+          <input
+            className="signup-input"
+            type="text"
+            placeholder="OTP"
+            name="otp"
+            required
+          />
+          <label htmlFor="password">Password: </label>
+          <input
+            className="signup-input"
             type="password"
             placeholder="Password"
             name="password"
             required
           />
+          <label htmlFor="confirmPassword">Confirm Password: </label>
           <input
+            className="signup-input"
             type="password"
             placeholder="Confirm Password"
             name="confirmPassword"
             required
           />
-          <button>Register</button>
+          <button className="signup-button">Register</button>
         </form>
       ) : (
-        <form onSubmit={handleSendOtp}>
-          <input type="text" placeholder="Full Name" name="fullname" required />
-          <input type="email" placeholder="Email" name="email" required />
-          <button>Send OTP</button>
-        </form>
+        <div className="signup-div">
+          <form className="signup-form" onSubmit={handleSendOtp}>
+            <h1>Create an Account</h1>
+            <label for="fullname">Name: </label>
+            <input
+              className="signup-input"
+              type="text"
+              placeholder=" Full Name "
+              name="fullname"
+              required
+            />
+            <label for="email">Email: </label>
+            <input
+              className="signup-input"
+              type="email"
+              placeholder=" Email "
+              name="email"
+              required
+            />
+            <button className="signup-button">Send OTP</button>
+            <Link to="/login" className="linktag">
+              <span className="span">Already have an Account? </span> Login
+            </Link>
+          </form>
+        </div>
       )}
-      <Link to="/login">Login</Link>
     </>
   );
 };

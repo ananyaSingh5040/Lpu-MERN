@@ -33,8 +33,17 @@ const sendEmail = async (to, subject, html) => {
 const sendOtpEmail = async (email, otp) => {
     const isEmailSent = await sendEmail(
         email,
-        "OTP verification sigma skibidi: ",
-        `<p>babygworl aapka OTP is <span style="color:brown">${otp}</span>*muaah*</p>`
+        "OTP verification: ",
+        `<p>Your OTP is <span style="color:brown">${otp}</span></p>`
+    );
+    //TODO: you can retry to do something else : its upto you
+    return isEmailSent;
+};
+const sendReminderMail = async (email, task) => {
+    const isEmailSent = await sendEmail(
+        email,
+        "Task Reminder: ",
+        `<p>Your Task is Pending ${task}</p>`
     );
     //TODO: you can retry to do something else : its upto you
     return isEmailSent;
@@ -42,4 +51,5 @@ const sendOtpEmail = async (email, otp) => {
 
 module.exports = {
     sendOtpEmail,
+    sendReminderMail,
 }; 
