@@ -17,10 +17,12 @@ const Task = require("./models/taskModel.js");
 const app = express(); //app creation
 //---------------------------------------------------------------------
 //middlewares
-app.use(morgan("dev"));
+app.use(morgan("dev")); //logs our requests.
 app.use(
+  //CROSS ORIGIN RESOURCE SHARING
   cors({
-    //credentials true kardene se backend ko access milta to change frontend
+    //cors allows or block requests from diff origin.
+    //allows the frontend to send and receive cookies or authentication headers when making requests to the backend.
     credentials: true,
     origin: process.env.FRONTEND_URL,
   })
@@ -123,7 +125,7 @@ app.post("/users/register", async (req, res) => {
 //OTPS:
 app.post("/otps", async (req, res) => {
   // const queryObj= req.query;
-  const { email } = req.query;
+  const { email } = req.body;
   //req format + regex + length checking of email.
   if (!email) {
     res.status(400).json({
@@ -257,7 +259,6 @@ app.use((req, res, next) => {
             msg: "Authorization failed!",
           });
       } else {
-       
         req.currUser = data;
         next();
       }
