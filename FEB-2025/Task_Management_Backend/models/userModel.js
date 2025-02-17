@@ -21,4 +21,4 @@ const userSchema = new mongoose.Schema({
 //schema is kind of a constructor for mongoose
 const User= mongoose.model("users",userSchema);
 //collection name is upto you par keep it noun and plural
-module.exports= User;
+module.exports= User; 
