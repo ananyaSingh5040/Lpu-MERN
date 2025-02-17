@@ -17,7 +17,7 @@ const App = () => {
       };
     } else {
       return {
-        isLoggedIn: false,
+        isLoggedIn: false, 
         fullName: "Guest",
       };
     }
