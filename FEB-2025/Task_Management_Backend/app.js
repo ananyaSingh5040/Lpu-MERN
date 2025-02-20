@@ -19,7 +19,7 @@ const cron = require("node-cron");
 //   console.log("running a task every minute"); 
 //   sendReminderMail("<email>");
 // });
-console.log("Frontend URL= ",process.env.FRONTEND_URL);
+// console.log("Frontend URL= ",process.env.FRONTEND_URL);
 //---------------------------------------------------------------------
 const app = express(); //app creation 
 //---------------------------------------------------------------------
