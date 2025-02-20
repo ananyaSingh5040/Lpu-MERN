@@ -14,7 +14,7 @@ const Navbar = ({currUser,handleLogout}) => {
       <Link to="/tasks" className='navbar-link'>Tasks</Link>
       <button onClick={handleLogout} className='navbar-button'>Logout</button>
     </ul>
-    </header>
+    </header> 
 
   </nav>
   </>
