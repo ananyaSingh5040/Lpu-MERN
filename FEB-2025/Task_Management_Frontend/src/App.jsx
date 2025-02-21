@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import SignUp from "./pages/SignUp";
 import { useState, useEffect } from "react";
 import TaskPage from "./pages/TaskPage";
+import logo from '/task_management_logo.png';
 
 const App = () => {
   const [currUser, setCurrUser] = useState(() => {
@@ -71,6 +72,8 @@ const App = () => {
 
   return (
     <>
+  
+
       <BrowserRouter>
         <Routes>
           <Route
