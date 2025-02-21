@@ -27,6 +27,7 @@ const App = () => {
     const newStateOfUser = {
       isLoggedIn: true,
       fullName: respObj.data.user.fullName,
+      email: respObj.data.user.email,
     };
     localStorage.setItem("isLoggedIn", true);
     setCurrUser(newStateOfUser);
