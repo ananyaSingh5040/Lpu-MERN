@@ -5,7 +5,7 @@ import { MdLabelImportant } from "react-icons/md";
 import { FaCheckDouble } from "react-icons/fa";
 import { TbNotebookOff } from "react-icons/tb";
 
-const Sidebar = () => {
+const Sidebar = ({currUser, handleLogout}) => {
   const data = [
     {
       title: "All Tasks",
@@ -26,14 +26,16 @@ const Sidebar = () => {
   ];
   return (
     <div className="main">
-      <div className="user">Hello, User!</div>
-      <div className="email">crap@gmail.com</div>
-      <div className="taskStatus">
-        {data.map((items, i) => (
-          <div className="item">{items.title}</div>
+      <div className="user">Hello, {currUser.fullName}!</div>
+      <div className="email">{currUser.email}</div>
+      
+        {data.map((item) => (
+          <div className="taskStatus">
+          <div key={item.id} className="item">{item.icon} {item.title}</div>
+          </div>
         ))}
-      </div>
-      <button className="btnn">Logout</button>
+     
+      <button onClick={handleLogout} className="btnn">Logout</button>
     </div>
   );
 };
