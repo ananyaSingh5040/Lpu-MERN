@@ -20,7 +20,7 @@
     padding: 4px;
     color: rgb(152, 150, 150);
     text-decoration: underline;
-    font-size: 20px;
+    font-size: large;
     text-align: left;
     margin-bottom: 60%;
 }
@@ -28,10 +28,17 @@
     margin: 0;
     padding: 4px;
     text-align: left;
-    margin-bottom: 90%;
     
 }
+.taskStatus:hover{
+  background-color: rgb(23, 22, 22);
+  cursor: pointer;
+  border-radius: 10px;
+  width: 63%;
+
+}
 .btnn {
+  margin-top: 90%;
   border-radius: 10px;
   margin-left: 10px;
   height: 40px;
@@ -42,4 +49,12 @@
   padding: 5px 10px;
   cursor: pointer; 
   text-align: center;
+  transition: all 0.3s ease-in-out;
 }
+.item {
+  display: flex;
+  /* align-items: center; */
+  gap: 10px; 
+}
+
+
