@@ -9,8 +9,9 @@ const HomePage = ({currUser,handleLogout}) => {
    {/* <Navbar currUser={currUser} handleLogout={handleLogout}/>
    <h1>homepage</h1> */}
    <div className="flex">
+    
 
-   <div className="sidebar"><Sidebar/></div>
+   <div className="sidebar"><Sidebar currUser={currUser} handleLogout={handleLogout}/></div>
    <div className="workspace"></div>
    </div>
    </>
