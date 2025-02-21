@@ -117,7 +117,7 @@ const SignUp = () => {
         <div className="signup-div">
           <form className="signup-form" onSubmit={handleSendOtp}>
             <h1>Create an Account</h1>
-            <label for="fullname">Name: </label>
+            <label htmlFor="fullname">Name: </label>
             <input
               className="signup-input"
               type="text"
@@ -125,7 +125,7 @@ const SignUp = () => {
               name="fullname"
               required
             />
-            <label for="email">Email: </label>
+            <label htmlFor="email">Email: </label>
             <input
               className="signup-input"
               type="email"
