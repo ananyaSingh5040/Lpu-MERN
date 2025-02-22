@@ -89,7 +89,7 @@ const TaskList = ({ list, getData, filterObj, title }) => {
                     return (
                         <div key={elem._id} className="task-card">
                             <h5>{idx}</h5>
-                            <p>{elem.workTitle}</p>
+                            <p>{elem.workTitle}</p> 
                             <p>{elem.taskTitle}</p>
                             {/* short hand of if - else  */}
                             {/* https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator */}

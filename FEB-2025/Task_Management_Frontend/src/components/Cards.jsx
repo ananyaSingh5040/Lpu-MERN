@@ -9,21 +9,25 @@ import { IoMdAddCircle } from "react-icons/io";
 const Cards = () => {
   const data = [
     {
+      _id: 1,
       title: "Hello",
       desc: "First Card",
       status: "Completed",
     },
     {
+      _id: 2,
       title: "Hello",
       desc: "Second Card",
       status: "Incomplete",
     },
     {
+      _id: 3,
       title: "Hello",
       desc: "Third Card",
       status: "Completed",
     },
     {
+      _id: 4,
       title: "Hello",
       desc: "Fourth Card",
       status: "Completed",
@@ -33,8 +37,8 @@ const Cards = () => {
   return (
     <div className="grid">
       {data &&
-        data.map((items, i) => (
-          <div className="cards">
+        data.map((items) => (
+          <div className="cards" key={items._id}>
             <h3>{items.title} </h3>
             <p>{items.desc}</p>
             <div className="button">
@@ -50,7 +54,7 @@ const Cards = () => {
               </button>
               <div className="btn2"> 
                 <button className="impbtn">
-                <b>  <CiHeart /></b>
+                 <CiHeart />
                 </button>
                 <button className="editbtn">
                   <MdEdit />

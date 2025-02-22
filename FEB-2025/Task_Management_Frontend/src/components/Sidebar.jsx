@@ -35,8 +35,8 @@ const Sidebar = ({currUser, handleLogout}) => {
       <div className="email">{currUser.email}</div>
       
         {data.map((item,i) => (
-          <div className="taskStatus">
-          <Link to= {item.link} key={i} className="item">{item.icon} {item.title}</Link>
+          <div className="taskStatus" key={item.title}>
+          <Link to= {item.link}  className="item">{item.icon} {item.title}</Link>
           </div>
         ))}
      
