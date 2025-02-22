@@ -1,11 +1,15 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate,Link } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUp from "./pages/SignUp";
 import { useState, useEffect } from "react";
 import TaskPage from "./pages/TaskPage";
-import logo from '/task_management_logo.png';
+import logo from "/task_management_logo.png";
+import AllTasks from "./pages/AllTasks";
+import ImpTask from "./pages/ImpTask";
+import CompTask from "./pages/CompTask";
+import InCompTask from "./pages/InCompTask";
 
 const App = () => {
   const [currUser, setCurrUser] = useState(() => {
@@ -18,7 +22,7 @@ const App = () => {
       };
     } else {
       return {
-        isLoggedIn: false, 
+        isLoggedIn: false,
         fullName: "Guest",
       };
     }
@@ -72,8 +76,6 @@ const App = () => {
 
   return (
     <>
-  
-
       <BrowserRouter>
         <Routes>
           <Route
@@ -85,7 +87,13 @@ const App = () => {
                 <Navigate to="/signup" />
               )
             }
-          />
+          >
+            {/* Fav child index se banta, parent call hoga toh index bhi hoga. */}
+            <Route index element={<AllTasks />} />
+            <Route path="/importantTasks" element={<ImpTask />} />
+            <Route path="/completedTasks" element={<CompTask />} />
+            <Route path="/incompleteTasks" element={<InCompTask />} />
+          </Route>
           {/* Navigate comp redirects you to the given route */}
           <Route
             path="/login"

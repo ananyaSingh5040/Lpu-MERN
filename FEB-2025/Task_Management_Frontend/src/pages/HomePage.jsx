@@ -2,6 +2,7 @@ import React from 'react'
 // import Navbar from '../components/Navbar';
 import "./home.css";
 import Sidebar from '../components/Sidebar';
+import { Outlet } from 'react-router';
 
 const HomePage = ({currUser,handleLogout}) => {
   return (
@@ -12,7 +13,9 @@ const HomePage = ({currUser,handleLogout}) => {
     
 
    <div className="sidebar"><Sidebar currUser={currUser} handleLogout={handleLogout}/></div>
-   <div className="workspace"></div>
+   <div className="workspace">
+    <Outlet/>
+   </div>
    </div>
    </>
   )

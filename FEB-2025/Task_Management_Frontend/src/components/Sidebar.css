@@ -31,10 +31,12 @@
     
 }
 .taskStatus:hover{
-  background-color: rgb(23, 22, 22);
+  background-color: rgb(86, 85, 85);
   cursor: pointer;
   border-radius: 10px;
   width: 63%;
+  transition: all 0.3s ease-in-out;
+  
 
 }
 .btnn {
@@ -55,6 +57,8 @@
   display: flex;
   /* align-items: center; */
   gap: 10px; 
+  color: white;
+  text-decoration: none;
 }
 
 

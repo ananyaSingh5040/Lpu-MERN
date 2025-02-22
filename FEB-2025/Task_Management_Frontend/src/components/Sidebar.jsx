@@ -4,24 +4,29 @@ import { CgNotes } from "react-icons/cg";
 import { MdLabelImportant } from "react-icons/md";
 import { FaCheckDouble } from "react-icons/fa";
 import { TbNotebookOff } from "react-icons/tb";
+import { Link } from "react-router";
 
 const Sidebar = ({currUser, handleLogout}) => {
   const data = [
     {
       title: "All Tasks",
       icon: <CgNotes />,
+      link:"/",
     },
     {
       title: "Important Tasks",
       icon: <MdLabelImportant />,
+      link:"/importantTasks",
     },
     {
       title: "Completed Tasks",
       icon: <FaCheckDouble />,
+      link:"/completedTasks",
     },
     {
       title: "Incomplete Tasks",
       icon: <TbNotebookOff />,
+      link:"/incompleteTasks",
     },
   ];
   return (
@@ -29,9 +34,9 @@ const Sidebar = ({currUser, handleLogout}) => {
       <div className="user">Hello, {currUser.fullName}!</div>
       <div className="email">{currUser.email}</div>
       
-        {data.map((item) => (
+        {data.map((item,i) => (
           <div className="taskStatus">
-          <div key={item.id} className="item">{item.icon} {item.title}</div>
+          <Link to= {item.link} key={i} className="item">{item.icon} {item.title}</Link>
           </div>
         ))}
      
