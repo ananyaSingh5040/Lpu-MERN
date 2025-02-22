@@ -4,7 +4,7 @@ button {
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
   padding: 4px;
   margin: 15px;
@@ -19,12 +19,13 @@ h3 {
 }
 p {
   color: rgb(138, 136, 136);
+  padding-top: 10px;
 }
 .ibtn {
   display: flex;
   align-items: center;
   gap: 5px;
-  background-color: #b15252;
+  background-color: #bb3e3e;
   padding: 8px 12px;
   margin-left: 20px;
   border-radius: 5px;
@@ -76,6 +77,8 @@ p {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-weight: bold;
+  color: rgb(211, 209, 209);
 }
 .iconn {
   font-size: 6rem;

@@ -5,7 +5,6 @@ import LoginPage from "./pages/LoginPage";
 import SignUp from "./pages/SignUp";
 import { useState, useEffect } from "react";
 import TaskPage from "./pages/TaskPage";
-import logo from "/task_management_logo.png";
 import AllTasks from "./pages/AllTasks";
 import ImpTask from "./pages/ImpTask";
 import CompTask from "./pages/CompTask";
