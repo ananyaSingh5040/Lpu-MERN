@@ -62,7 +62,7 @@ const App = () => {
         credentials: "include",
       }
     );
-    const respObj = await resp.json();
+    const respObj = resp.json();
     if (respObj.status === "success") {
       setCurrUser({
         isLoggedIn: false,
