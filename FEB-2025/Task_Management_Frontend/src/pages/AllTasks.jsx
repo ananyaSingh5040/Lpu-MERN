@@ -4,7 +4,7 @@ import Cards from '../components/Cards'
 const AllTasks = () => {
   return (
     <div>
-        <Cards/>
+        <Cards home="true"/>
     </div>
 
   )
