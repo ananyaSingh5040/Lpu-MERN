@@ -1,8 +1,11 @@
 import React from 'react'
+import Cards from '../components/Cards'
 
 const ImpTask = () => {
   return (
-    <div>ImpTask</div>
+    <div>
+      <Cards home="false"/>
+    </div>
   )
 }
 
