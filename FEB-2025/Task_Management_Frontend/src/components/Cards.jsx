@@ -6,7 +6,7 @@ import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { IoMdAddCircle } from "react-icons/io";
 
-const Cards = () => {
+const Cards = ({home}) => {
   const data = [
     {
       _id: 1,
@@ -66,12 +66,14 @@ const Cards = () => {
             </div>
           </div>
         ))}
+        {home==="true" && 
       <div className="cards cardtask">
         <button className="butt">
           <IoMdAddCircle className="iconn" />
         </button>
         <div>Add Task</div>
       </div>
+} 
     </div>
   );
 };
