@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async (to, subject, html) => {
     try {
         const info = await transporter.sendMail({
-            from: '"Bwestie ke taraf se: " <cloudfile2024@gmail.com>',
+            from: '"From Task Management App: " <cloudfile2024@gmail.com>',
             to,
             subject,
             html,
